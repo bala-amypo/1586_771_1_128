@@ -7,4 +7,5 @@ public class InvestorProfile{
     private String email;
     private Boolean active;
     private LocalDateTime createdAt;
+
 }
