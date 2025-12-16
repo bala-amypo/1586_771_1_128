@@ -8,4 +8,4 @@ public class InvestorProfile{
     private Boolean active;
     private LocalDateTime createdAt;
 
-}
+} 
