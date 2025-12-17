@@ -1,35 +1,35 @@
-package com.example.demo.model;
+package com.example.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-public class AssetClassAllocationRule {
-    private Long id;
-    private long investrId;
-    private  assetClassType assertclass;
-    private Double currentvalue;
-    private LocalDateTime snapshotDate;
-    public AssetClassAllocationRule(long investrId, Double currentvalue, LocalDateTime snapshotDate) {
-        this.investrId = investrId;
-        this.currentvalue = currentvalue;
-        this.snapshotDate = snapshotDate;
+@Entity
+public class HoldingRecord {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // (Long, PK)
+
+    private Long investorId; // (Long)
+
+    private LocalDateTime snapshotDate; // (LocalDateTime)
+
+    @Enumerated(EnumType.STRING)
+    private AssetClassType assetClass; // (Enum: AssetClassType)
+
+    private Double currentValue; // (Double)
+
+    // Rule: currentValue > 0 (Throw 'must be > 0').
+    // NOTE: This check is best done in the setter or before persisting.
+
+    // Getters and Setters (omitted for brevity)
+    public Double getCurrentValue() { return currentValue; }
+    public void setCurrentValue(Double currentValue) {
+        if (currentValue <= 0) {
+            // As per rule: Throw 'must be > 0'
+            throw new IllegalArgumentException("currentValue must be greater than 0.");
+        }
+        this.currentValue = currentValue;
     }
-    public long getInvestrId() {
-        return investrId;
-    }
-    public void setInvestrId(long investrId) {
-        this.investrId = investrId;
-    }
-    public Double getCurrentvalue() {
-        return currentvalue;
-    }
-    public void setCurrentvalue(Double currentvalue) {
-        this.currentvalue = currentvalue;
-    }
-    public LocalDateTime getSnapshotDate() {
-        return snapshotDate;
-    }
-    public void setSnapshotDate(LocalDateTime snapshotDate) {
-        this.snapshotDate = snapshotDate;
-    }
-    
+    // ... other getters/setters ...
 }
