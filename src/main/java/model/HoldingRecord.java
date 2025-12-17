@@ -1,35 +1,66 @@
 package com.example.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "holding_record")
 public class HoldingRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // (Long, PK)
+    private Long id;
 
-    private Long investorId; // (Long)
+    @Column(name = "investor_id", nullable = false)
+    private Long investorId;
 
-    private LocalDateTime snapshotDate; // (LocalDateTime)
+    @Column(name = "snapshot_date", nullable = false)
+    private LocalDate snapshotDate;
 
     @Enumerated(EnumType.STRING)
-    private AssetClassType assetClass; // (Enum: AssetClassType)
+    @Column(name = "asset_class", nullable = false)
+    private AssetClassType assetClass;
 
-    private Double currentValue; // (Double)
+    @Column(name = "current_value", nullable = false)
+    private Double currentValue;
 
-    // Rule: currentValue > 0 (Throw 'must be > 0').
-    // NOTE: This check is best done in the setter or before persisting.
+    public Long getId() {
+        return id;
+    }
 
-    // Getters and Setters (omitted for brevity)
-    public Double getCurrentValue() { return currentValue; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getInvestorId() {
+        return investorId;
+    }
+
+    public void setInvestorId(Long investorId) {
+        this.investorId = investorId;
+    }
+
+    public LocalDate getSnapshotDate() {
+        return snapshotDate;
+    }
+
+    public void setSnapshotDate(LocalDate snapshotDate) {
+        this.snapshotDate = snapshotDate;
+    }
+
+    public AssetClassType getAssetClass() {
+        return assetClass;
+    }
+
+    public void setAssetClass(AssetClassType assetClass) {
+        this.assetClass = assetClass;
+    }
+
+    public Double getCurrentValue() {
+        return currentValue;
+    }
+
     public void setCurrentValue(Double currentValue) {
-        if (currentValue <= 0) {
-            // As per rule: Throw 'must be > 0'
-            throw new IllegalArgumentException("currentValue must be greater than 0.");
-        }
         this.currentValue = currentValue;
     }
-    // ... other getters/setters ...
 }

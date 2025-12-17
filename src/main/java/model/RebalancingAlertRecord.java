@@ -1,73 +1,77 @@
-package com.example.demo.model;
+package com.example.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "rebalancing_alert")
 public class RebalancingAlertRecord {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "investor_id", nullable = false)
     private Long investorId;
-    private AssetClassType assetClass; // Enum
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "asset_class", nullable = false)
+    private AssetClassType assetClass;
+
+    @Column(name = "current_percentage", nullable = false)
     private Double currentPercentage;
+
+    @Column(name = "target_percentage", nullable = false)
     private Double targetPercentage;
-    private AlertSeverity severity; // Enum
-    private String message;
-    private LocalDateTime alertDate;
-    private Boolean resolved;
-    public RebalancingAlertRecord(Long investorId, AssetClassType assetClass, Double currentPercentage,
-            Double targetPercentage, AlertSeverity severity, String message, LocalDateTime alertDate,
-            Boolean resolved) {
-        this.investorId = investorId;
-        this.assetClass = assetClass;
-        this.currentPercentage = currentPercentage;
-        this.targetPercentage = targetPercentage;
-        this.severity = severity;
-        this.message = message;
-        this.alertDate = alertDate;
-        this.resolved = resolved;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "severity", nullable = false)
+    private AlertSeverity severity;
+
+    public Long getId() {
+        return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getInvestorId() {
         return investorId;
     }
+
     public void setInvestorId(Long investorId) {
         this.investorId = investorId;
     }
+
     public AssetClassType getAssetClass() {
         return assetClass;
     }
+
     public void setAssetClass(AssetClassType assetClass) {
         this.assetClass = assetClass;
     }
+
     public Double getCurrentPercentage() {
         return currentPercentage;
     }
+
     public void setCurrentPercentage(Double currentPercentage) {
         this.currentPercentage = currentPercentage;
     }
+
     public Double getTargetPercentage() {
         return targetPercentage;
     }
+
     public void setTargetPercentage(Double targetPercentage) {
         this.targetPercentage = targetPercentage;
     }
+
     public AlertSeverity getSeverity() {
         return severity;
     }
+
     public void setSeverity(AlertSeverity severity) {
         this.severity = severity;
     }
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
-    public LocalDateTime getAlertDate() {
-        return alertDate;
-    }
-    public void setAlertDate(LocalDateTime alertDate) {
-        this.alertDate = alertDate;
-    }
-    public Boolean getResolved() {
-        return resolved;
-    }
-    public void setResolved(Boolean resolved) {
-        this.resolved = resolved;
-    }
-    
 }

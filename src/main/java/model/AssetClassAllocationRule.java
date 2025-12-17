@@ -3,32 +3,63 @@ package com.example.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "asset_allocation_rule")
 public class AssetClassAllocationRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // (Long, PK)
+    private Long id;
 
-    private Long investorId; // (Long)
+    @Column(name = "investor_id", nullable = false)
+    private Long investorId;
 
     @Enumerated(EnumType.STRING)
-    private AssetClassType assetClass; // (Enum: AssetClassType)
+    @Column(name = "asset_class", nullable = false)
+    private AssetClassType assetClass;
 
-    private Double targetPercentage; // (Double)
+    @Column(name = "target_percentage", nullable = false)
+    private Double targetPercentage;
 
-    private boolean active; // (Boolean)
-    
-    // Rule: targetPercentage between 0 and 100.
-    // NOTE: This rule is typically enforced at the service/validation layer (e.g., using Bean Validation like @Min(0) @Max(100)).
-    // Rule: Active rules used in calculations. (A business logic rule, not directly coded here)
+    @Column(name = "active", nullable = false)
+    private Boolean active;
 
-    // Getters and Setters (omitted for brevity)
-    public Double getTargetPercentage() { return targetPercentage; }
-    public void setTargetPercentage(Double targetPercentage) { 
-        if (targetPercentage < 0 || targetPercentage > 100) {
-            throw new IllegalArgumentException("targetPercentage must be between 0 and 100.");
-        }
-        this.targetPercentage = targetPercentage; 
+    public Long getId() {
+        return id;
     }
-    // ... other getters/setters ...
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getInvestorId() {
+        return investorId;
+    }
+
+    public void setInvestorId(Long investorId) {
+        this.investorId = investorId;
+    }
+
+    public AssetClassType getAssetClass() {
+        return assetClass;
+    }
+
+    public void setAssetClass(AssetClassType assetClass) {
+        this.assetClass = assetClass;
+    }
+
+    public Double getTargetPercentage() {
+        return targetPercentage;
+    }
+
+    public void setTargetPercentage(Double targetPercentage) {
+        this.targetPercentage = targetPercentage;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
