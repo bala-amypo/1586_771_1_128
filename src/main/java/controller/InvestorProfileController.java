@@ -27,7 +27,7 @@ public class InvestorProfileController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Investor>> listAll() {
+    public ResponseEntity<List<InvestorProfile>> listAll() {
         return ResponseEntity.ok(service.getAll());
     }
 
@@ -38,7 +38,7 @@ public class InvestorProfileController {
     }
 
     @GetMapping("/lookup/{investorId}")
-    public ResponseEntity<Investor> lookup(@PathVariable Long investorId) {
+    public ResponseEntity<InvestorProfile> lookup(@PathVariable Long investorId) {
         // In this context, lookup is similar to getById
         return ResponseEntity.ok(service.getById(investorId));
     }
