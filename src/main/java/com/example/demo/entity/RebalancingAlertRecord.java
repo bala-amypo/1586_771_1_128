@@ -1,6 +1,6 @@
-package com.example.demo.enums.entity;
+package com.example.demo.entity;
 
-import com.example.demo.entity.enums.*;
+import com.example.demo.entity.enums.AlertSeverity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
