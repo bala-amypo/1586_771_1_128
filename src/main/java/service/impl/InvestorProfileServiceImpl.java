@@ -1,45 +1,44 @@
-package com.demo.service.impl; 
+package com.example.investorprofiles;
 
-import com.demo.model.InvestorProfile;
-import com.demo.repository.InvestorProfileRepository;
-import com.demo.service.InvestorProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
 public class InvestorProfileServiceImpl implements InvestorProfileService {
 
-    @Autowired
-    private InvestorProfileRepository investorRepo;
+    private final InvestorRepository investorRepository;
 
-    @Override
-    public InvestorProfile createInvestor(InvestorProfile investor) {
-        return investorRepo.save(investor);
+    @Autowired
+    public InvestorProfileServiceImpl(InvestorRepository investorRepository) {
+        this.investorRepository = investorRepository;
     }
 
     @Override
-    public InvestorProfile getInvestorById(Long id) {
-        return investorRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Investor not found"));
+    public InvestorProfile createInvestor(InvestorProfile investor) {
+        return investor;
+    }
+
+    @Override
+    public InvestorProfile getInvestorById(Long id) throws InvestorNotFoundException {
+        Optional<InvestorProfile> foundInvestor = Optional.empty();
+
+        return foundInvestor.orElseThrow(() -> new InvestorNotFoundException("Investor with ID " + id + " not found."));
     }
 
     @Override
     public InvestorProfile findByInvestorId(String investorId) {
-        return investorRepo.findByInvestorId(investorId);
+        return null;
     }
 
     @Override
     public List<InvestorProfile> getAllInvestors() {
-        return investorRepo.findAll();
+        return List.of();
     }
 
     @Override
     public void updateInvestorStatus(Long id, boolean active) {
-        InvestorProfile investor = getInvestorById(id);
-        investor.setActive(active);
-        investorRepo.save(investor);
+        
     }
 }

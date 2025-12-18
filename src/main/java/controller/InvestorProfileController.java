@@ -1,37 +1,46 @@
 package com.demo.controller;
-import com.demo.model.InvestorProfile;import com.demo.service.InvestorProfileService;
+
+import com.demo.model.InvestorProfile;
+import com.demo.service.InvestorProfileService;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/investors")
+@RequestMapping("/investors")
 public class InvestorProfileController {
+
     private final InvestorProfileService service;
 
     public InvestorProfileController(InvestorProfileService service) {
         this.service = service;
     }
 
-    @PostMapping("/")
-    public InvestorProfile createInvestor(@RequestBody InvestorProfile investor) {
-        return service.createInvestor(investor);
+    @PostMapping
+    public InvestorProfile create(@RequestBody InvestorProfile investorProfile) {
+        return service.createInvestor(investorProfile);
     }
 
     @GetMapping("/{id}")
-    public InvestorProfile getInvestorById(@PathVariable Long id) {
+    public InvestorProfile getById(@PathVariable Long id) {
         return service.getInvestorById(id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<InvestorProfile> getAll() {
         return service.getAllInvestors();
     }
 
-    @PutMapping("/{id}/status")
-    public void updateStatus(@PathVariable Long id, @RequestParam boolean active) {
-        service.updateInvestorStatus(id, active);
+    @PutMapping("/{id}")
+    public InvestorProfile update(
+            @PathVariable Long id,
+            @RequestBody InvestorProfile investorProfile) {
+        return service.updateInvestor(id, investorProfile);
     }
 
-    @GetMapping("/lookup/{investorId}")
-    public InvestorProfile lookup(@PathVariable String investorId) {
-        return service.findByInvestorId(investorId)
-                .orElseThrow(() -> new RuntimeException("Investor not found"));
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.deleteInvestor(id);
     }
 }
