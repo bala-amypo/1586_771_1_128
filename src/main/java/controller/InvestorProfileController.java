@@ -1,8 +1,7 @@
-package com.example.investor.controller;
+package com.example.demo.controller;
 
-import com.example.investor.model.Investor;
-import com.example.investor.service.InvestorService;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.model.InvestorProfile;
+import com.example.demo.service.InvestorProfileService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
