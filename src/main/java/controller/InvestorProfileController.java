@@ -1,5 +1,7 @@
 package com.example.demo.controller;
-import org.springframework.web.bind.annotation.*;
+
+import com.demo.model.InvestorProfile;
+import com.demo.service.InvestorProfileService;
 import java.util.List;
 
 @RestController

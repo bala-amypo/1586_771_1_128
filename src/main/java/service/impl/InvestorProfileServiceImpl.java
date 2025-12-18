@@ -1,4 +1,4 @@
-package com.example.onetomany.model;
+package com.demo.service.impl; 
 
 import com.demo.model.InvestorProfile;
 import com.demo.repository.InvestorProfileRepository;
