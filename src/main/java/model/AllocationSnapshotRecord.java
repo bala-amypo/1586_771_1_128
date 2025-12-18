@@ -1,65 +1,65 @@
-package com.example.model;
+// package com.example.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+// import jakarta.persistence.*;
+// import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "allocation_snapshot")
-public class AllocationSnapshotRecord {
+// @Entity
+// @Table(name = "allocation_snapshot")
+// public class AllocationSnapshotRecord {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
 
-    @Column(name = "investor_id", nullable = false)
-    private Long investorId;
+//     @Column(name = "investor_id", nullable = false)
+//     private Long investorId;
 
-    @Column(name = "snapshot_date", nullable = false)
-    private LocalDateTime snapshotDate;
+//     @Column(name = "snapshot_date", nullable = false)
+//     private LocalDateTime snapshotDate;
 
-    @Column(name = "total_portfolio_value", nullable = false)
-    private Double totalPortfolioValue;
+//     @Column(name = "total_portfolio_value", nullable = false)
+//     private Double totalPortfolioValue;
 
-    @Column(name = "allocation_json", columnDefinition = "TEXT")
-    private String allocationJson;
+//     @Column(name = "allocation_json", columnDefinition = "TEXT")
+//     private String allocationJson;
 
-    public Long getId() {
-        return id;
-    }
+//     public Long getId() {
+//         return id;
+//     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+//     public void setId(Long id) {
+//         this.id = id;
+//     }
 
-    public Long getInvestorId() {
-        return investorId;
-    }
+//     public Long getInvestorId() {
+//         return investorId;
+//     }
 
-    public void setInvestorId(Long investorId) {
-        this.investorId = investorId;
-    }
+//     public void setInvestorId(Long investorId) {
+//         this.investorId = investorId;
+//     }
 
-    public LocalDateTime getSnapshotDate() {
-        return snapshotDate;
-    }
+//     public LocalDateTime getSnapshotDate() {
+//         return snapshotDate;
+//     }
 
-    public void setSnapshotDate(LocalDateTime snapshotDate) {
-        this.snapshotDate = snapshotDate;
-    }
+//     public void setSnapshotDate(LocalDateTime snapshotDate) {
+//         this.snapshotDate = snapshotDate;
+//     }
 
-    public Double getTotalPortfolioValue() {
-        return totalPortfolioValue;
-    }
+//     public Double getTotalPortfolioValue() {
+//         return totalPortfolioValue;
+//     }
 
-    public void setTotalPortfolioValue(Double totalPortfolioValue) {
-        this.totalPortfolioValue = totalPortfolioValue;
-    }
+//     public void setTotalPortfolioValue(Double totalPortfolioValue) {
+//         this.totalPortfolioValue = totalPortfolioValue;
+//     }
 
-    public String getAllocationJson() {
-        return allocationJson;
-    }
+//     public String getAllocationJson() {
+//         return allocationJson;
+//     }
 
-    public void setAllocationJson(String allocationJson) {
-        this.allocationJson = allocationJson;
-    }
-}
+//     public void setAllocationJson(String allocationJson) {
+//         this.allocationJson = allocationJson;
+//     }
+// }
