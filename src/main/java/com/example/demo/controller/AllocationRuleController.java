@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.enums.AssetClassAllocationRule;
+import com.example.demo.entity.AssetClassAllocationRule;
 import com.example.demo.service.AllocationRuleService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
