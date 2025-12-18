@@ -1,9 +1,5 @@
-package com.example.demo.controller;
-
-import com.demo.model.InvestorProfile;
-import com.demo.service.InvestorProfileService;
-import java.util.List;
-
+package com.demo.controller;
+import com.demo.model.InvestorProfile;import com.demo.service.InvestorProfileService;
 @RestController
 @RequestMapping("/api/investors")
 public class InvestorProfileController {
