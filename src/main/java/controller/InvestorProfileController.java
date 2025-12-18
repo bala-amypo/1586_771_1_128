@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.example.demo.controller;
 
 import com.demo.model.InvestorProfile;
 import com.demo.service.InvestorProfileService;

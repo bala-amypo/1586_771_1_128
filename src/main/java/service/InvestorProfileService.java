@@ -1,4 +1,4 @@
-package com.demo.service;
+package com.demo.example.service;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
