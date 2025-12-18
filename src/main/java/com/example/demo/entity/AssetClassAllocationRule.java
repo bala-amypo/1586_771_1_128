@@ -1,4 +1,4 @@
-package com.example.demo.enums.entity;
+package com.example.demo.entity.enums.;
 
 import com.example.demo.entity.enums.AssetClassType;
 import jakarta.persistence.*;
