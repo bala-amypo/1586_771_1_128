@@ -8,11 +8,11 @@ public interface RebalancingAlertService {
 
     RebalancingAlertRecord createAlert(RebalancingAlertRecord alert);
 
-    RebalancingAlertRecord getAlertById(Long id);   // ✅ ADD THIS
+    RebalancingAlertRecord resolveAlert(Long id);
 
     List<RebalancingAlertRecord> getAlertsByInvestor(Long investorId);
 
-    RebalancingAlertRecord resolveAlert(Long alertId);
+    RebalancingAlertRecord getAlertById(Long id);
 
     List<RebalancingAlertRecord> getAllAlerts();
 }
