@@ -82,7 +82,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.2.5</version>
 				<dependencies>
-				<dependency>
+				                      <dependency>
     <groupId>io.jsonwebtoken</groupId>
     <artifactId>jjwt</artifactId>
     <version>0.9.1</version>
@@ -92,6 +92,7 @@
     <artifactId>jaxb-api</artifactId>
     <version>2.3.1</version>
 </dependency>
+				
 					<dependency>
 						<groupId>org.apache.maven.surefire</groupId>
 						<artifactId>surefire-testng</artifactId>
