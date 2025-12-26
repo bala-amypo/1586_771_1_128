@@ -1,50 +1,26 @@
-package com.example.demo.entity;
+package com.example.demo.service.impl;
 
-import com.example.demo.entity.enums.AlertSeverity;
-import com.example.demo.entity.enums.AssetClassType;
-import jakarta.persistence.*;
+import com.example.demo.entity.RebalancingAlertRecord;
+import com.example.demo.repository.RebalancingAlertRepository;
+import com.example.demo.service.RebalancingAlertService;
+import org.springframework.stereotype.Service;
 
-@Entity
-@Table(name = "rebalancing_alerts")
-public class RebalancingAlertRecord {
+@Service
+public class RebalancingAlertServiceImpl implements RebalancingAlertService {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private final RebalancingAlertRepository repository;
 
-    private Long investorId;
-
-    @Enumerated(EnumType.STRING)
-    private AssetClassType assetClass;
-
-    private Double currentPercentage;
-
-    private Double targetPercentage;
-
-    @Enumerated(EnumType.STRING)
-    private AlertSeverity severity;
-
-    private Boolean resolved = false;
-
-    public RebalancingAlertRecord() {}
-
-    public RebalancingAlertRecord(Long investorId, AssetClassType assetClass,
-                                  Double currentPercentage, Double targetPercentage,
-                                  AlertSeverity severity) {
-        this.investorId = investorId;
-        this.assetClass = assetClass;
-        this.currentPercentage = currentPercentage;
-        this.targetPercentage = targetPercentage;
-        this.severity = severity;
+    public RebalancingAlertServiceImpl(RebalancingAlertRepository repository) {
+        this.repository = repository;
     }
 
-    public Long getId() { return id; }
-    public Long getInvestorId() { return investorId; }
-    public AssetClassType getAssetClass() { return assetClass; }
-    public Double getCurrentPercentage() { return currentPercentage; }
-    public Double getTargetPercentage() { return targetPercentage; }
-    public AlertSeverity getSeverity() { return severity; }
-    public Boolean getResolved() { return resolved; }
-
-    public void setResolved(Boolean resolved) { this.resolved = resolved; }
+    @Override
+    public RebalancingAlertRecord createAlert(RebalancingAlertRecord alert) {
+        // Tests expect:
+        // throw IllegalArgumentException when currentPercentage <= targetPercentage
+        if (alert.getCurrentPercentage() <= alert.getTargetPercentage()) {
+            throw new IllegalArgumentException("Invalid Alert Logic: currentPercentage > targetPercentage");
+        }
+        return repository.save(alert);
+    }
 }
