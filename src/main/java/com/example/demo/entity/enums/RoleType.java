@@ -1,5 +1,5 @@
 package com.example.demo.entity.enums;
 
 public enum RoleType {
-    INVESTOR, ANALYST, ADMIN [cite: 43]
+    INVESTOR, ANALYST, ADMIN 
 }
