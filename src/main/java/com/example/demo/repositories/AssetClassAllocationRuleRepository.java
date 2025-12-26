@@ -7,14 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface AssetClassAllocationRuleRepository
-        extends JpaRepository<AssetClassAllocationRule, Long> {
+public interface AssetClassAllocationRuleRepository extends JpaRepository<AssetClassAllocationRule, Long> {
 
     List<AssetClassAllocationRule> findByInvestorId(Long investorId);
 
-    @Query("SELECT r FROM AssetClassAllocationRule r " +
-           "WHERE r.investorId = :investorId AND r.active = true")
+    // ACTIVE rules for investor — explicit @Query required
+    @Query("SELECT r FROM AssetClassAllocationRule r WHERE r.investorId = :investorId AND r.active = true")
     List<AssetClassAllocationRule> findActiveRulesHql(Long investorId);
 
+    // Used in snapshot comparison logic
     List<AssetClassAllocationRule> findByInvestorIdAndActiveTrue(Long investorId);
 }

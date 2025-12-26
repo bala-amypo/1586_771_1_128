@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RebalancingAlertRecordRepository
-        extends JpaRepository<RebalancingAlertRecord, Long> {
+public interface RebalancingAlertRecordRepository extends JpaRepository<RebalancingAlertRecord, Long> {
 
     List<RebalancingAlertRecord> findByInvestorId(Long investorId);
 
+    // unresolved alerts lookup
     List<RebalancingAlertRecord> findByResolvedFalse();
 }

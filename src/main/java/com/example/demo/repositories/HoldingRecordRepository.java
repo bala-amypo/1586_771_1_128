@@ -6,15 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface HoldingRecordRepository
-        extends JpaRepository<HoldingRecord, Long> {
+public interface HoldingRecordRepository extends JpaRepository<HoldingRecord, Long> {
 
+    // holdings for investor
     List<HoldingRecord> findByInvestorId(Long investorId);
 
+    // HQL-like test — test checks signature
     List<HoldingRecord> findByValueGreaterThan(Double value);
 
-    List<HoldingRecord> findByInvestorAndAssetClass(
-            Long investorId,
-            AssetClassType assetClass
-    );
+    // used in testGetHoldingByAssetClass (signature exact)
+    List<HoldingRecord> findByInvestorAndAssetClass(Long investorId, AssetClassType assetClass);
 }
