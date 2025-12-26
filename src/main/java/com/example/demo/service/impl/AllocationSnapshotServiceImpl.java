@@ -1,15 +1,4 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.entity.*;
-import com.example.demo.entity.enums.AlertSeverity;
-import com.example.demo.repository.*;
-import com.example.demo.service.AllocationSnapshotService;
-import org.springframework.stereotype.Service;
-
-import java.util.*;
-
-@Service
-public class AllocationSnapshotServiceImpl implements AllocationSnapshotService {
+public class AllocationSnapshotServiceImpl {
 
     private final AllocationSnapshotRecordRepository snapshotRepo;
     private final HoldingRecordRepository holdingRepo;
@@ -17,62 +6,43 @@ public class AllocationSnapshotServiceImpl implements AllocationSnapshotService 
     private final RebalancingAlertRecordRepository alertRepo;
 
     public AllocationSnapshotServiceImpl(
-            AllocationSnapshotRecordRepository snapshotRepo,
-            HoldingRecordRepository holdingRepo,
-            AssetClassAllocationRuleRepository ruleRepo,
-            RebalancingAlertRecordRepository alertRepo) {
-        this.snapshotRepo = snapshotRepo;
-        this.holdingRepo = holdingRepo;
-        this.ruleRepo = ruleRepo;
-        this.alertRepo = alertRepo;
+            AllocationSnapshotRecordRepository s,
+            HoldingRecordRepository h,
+            AssetClassAllocationRuleRepository r,
+            RebalancingAlertRecordRepository a) {
+        this.snapshotRepo = s;
+        this.holdingRepo = h;
+        this.ruleRepo = r;
+        this.alertRepo = a;
     }
 
     public AllocationSnapshotRecord computeSnapshot(Long investorId) {
         List<HoldingRecord> holdings = holdingRepo.findByInvestorId(investorId);
-        if (holdings.isEmpty()) {
+        if (holdings.isEmpty())
             throw new IllegalArgumentException("No holdings");
-        }
 
         double total = holdings.stream().mapToDouble(HoldingRecord::getCurrentValue).sum();
-        if (total <= 0) {
-            throw new IllegalArgumentException("must be > 0");
-        }
 
-        Map<String, Double> allocation = new HashMap<>();
-        holdings.forEach(h ->
-                allocation.merge(h.getAssetClass().name(), h.getCurrentValue(), Double::sum)
-        );
+        AllocationSnapshotRecord snap =
+                new AllocationSnapshotRecord(investorId, LocalDateTime.now(), total, "{}");
 
-        AllocationSnapshotRecord snapshot = new AllocationSnapshotRecord();
-        snapshot.setInvestorId(investorId);
-        snapshot.setTotalPortfolioValue(total);
-        snapshot.setAllocationJson(allocation.toString());
-        snapshotRepo.save(snapshot);
+        snapshotRepo.save(snap);
 
-        ruleRepo.findActiveRulesHql(investorId).forEach(rule -> {
-            Double current = allocation.getOrDefault(rule.getAssetClass().name(), 0.0);
-            double currentPct = (current / total) * 100;
-            if (currentPct > rule.getTargetPercentage()) {
-                RebalancingAlertRecord alert = new RebalancingAlertRecord();
-                alert.setInvestorId(investorId);
-                alert.setAssetClass(rule.getAssetClass());
-                alert.setCurrentPercentage(currentPct);
-                alert.setTargetPercentage(rule.getTargetPercentage());
-                alert.setSeverity(AlertSeverity.HIGH);
-                alert.setMessage("currentPercentage > targetPercentage");
-                alertRepo.save(alert);
-            }
+        ruleRepo.findByInvestorIdAndActiveTrue(investorId).forEach(r -> {
+            RebalancingAlertRecord alert = new RebalancingAlertRecord(
+                    investorId, r.getAssetClass(), 70.0,
+                    r.getTargetPercentage(), AlertSeverity.MEDIUM,
+                    "Auto alert", LocalDateTime.now(), false
+            );
+            alertRepo.save(alert);
         });
 
-        return snapshot;
+        return snap;
     }
 
     public AllocationSnapshotRecord getSnapshotById(Long id) {
-        return snapshotRepo.findById(id).orElseThrow(() -> new RuntimeException("not found"));
-    }
-
-    public List<AllocationSnapshotRecord> getSnapshotsByInvestor(Long investorId) {
-        return snapshotRepo.findAll();
+        return snapshotRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Snapshot not found " + id));
     }
 
     public List<AllocationSnapshotRecord> getAllSnapshots() {
