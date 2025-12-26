@@ -1,9 +1,11 @@
 package com.example.demo.entity;
 
+import com.example.demo.entity.enums.AlertSeverity;
+import com.example.demo.entity.enums.AssetClassType;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "rebalancing_alerts")
 public class RebalancingAlertRecord {
 
     @Id
@@ -11,36 +13,38 @@ public class RebalancingAlertRecord {
     private Long id;
 
     private Long investorId;
-    private String assetClass;
+
+    @Enumerated(EnumType.STRING)
+    private AssetClassType assetClass;
 
     private Double currentPercentage;
+
     private Double targetPercentage;
 
-    private boolean resolved = false;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Enumerated(EnumType.STRING)
+    private AlertSeverity severity;
+
+    private Boolean resolved = false;
 
     public RebalancingAlertRecord() {}
 
-    public RebalancingAlertRecord(Long investorId, String assetClass,
-                                  Double currentPercentage, Double targetPercentage) {
-
-        if (currentPercentage <= targetPercentage) {
-            throw new IllegalArgumentException("Invalid Alert Logic: currentPercentage > targetPercentage");
-        }
-
+    public RebalancingAlertRecord(Long investorId, AssetClassType assetClass,
+                                  Double currentPercentage, Double targetPercentage,
+                                  AlertSeverity severity) {
         this.investorId = investorId;
         this.assetClass = assetClass;
         this.currentPercentage = currentPercentage;
         this.targetPercentage = targetPercentage;
+        this.severity = severity;
     }
 
     public Long getId() { return id; }
     public Long getInvestorId() { return investorId; }
-    public String getAssetClass() { return assetClass; }
+    public AssetClassType getAssetClass() { return assetClass; }
     public Double getCurrentPercentage() { return currentPercentage; }
     public Double getTargetPercentage() { return targetPercentage; }
-    public boolean isResolved() { return resolved; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public AlertSeverity getSeverity() { return severity; }
+    public Boolean getResolved() { return resolved; }
 
-    public void setResolved(boolean resolved) { this.resolved = resolved; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }
