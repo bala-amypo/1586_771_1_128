@@ -4,5 +4,5 @@ import com.example.demo.entity.InvestorProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InvestorProfileRepository extends JpaRepository<InvestorProfile, Long> {
-    InvestorProfile findByInvestorId(String investorId);
+    Optional<InvestorProfile> findByInvestorId(String investorId);
 }
