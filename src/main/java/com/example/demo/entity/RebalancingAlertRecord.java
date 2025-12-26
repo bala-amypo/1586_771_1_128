@@ -1,26 +1,46 @@
-package com.example.demo.service.impl;
+package com.example.demo.entity;
 
-import com.example.demo.entity.RebalancingAlertRecord;
-import com.example.demo.repository.RebalancingAlertRepository;
-import com.example.demo.service.RebalancingAlertService;
-import org.springframework.stereotype.Service;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-@Service
-public class RebalancingAlertServiceImpl implements RebalancingAlertService {
+@Entity
+public class RebalancingAlertRecord {
 
-    private final RebalancingAlertRepository repository;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public RebalancingAlertServiceImpl(RebalancingAlertRepository repository) {
-        this.repository = repository;
-    }
+    private Long investorId;
+    private String assetClass;
 
-    @Override
-    public RebalancingAlertRecord createAlert(RebalancingAlertRecord alert) {
-        // Tests expect:
-        // throw IllegalArgumentException when currentPercentage <= targetPercentage
-        if (alert.getCurrentPercentage() <= alert.getTargetPercentage()) {
+    private Double currentPercentage;
+    private Double targetPercentage;
+
+    private boolean resolved = false;
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    public RebalancingAlertRecord() {}
+
+    public RebalancingAlertRecord(Long investorId, String assetClass,
+                                  Double currentPercentage, Double targetPercentage) {
+
+        if (currentPercentage <= targetPercentage) {
             throw new IllegalArgumentException("Invalid Alert Logic: currentPercentage > targetPercentage");
         }
-        return repository.save(alert);
+
+        this.investorId = investorId;
+        this.assetClass = assetClass;
+        this.currentPercentage = currentPercentage;
+        this.targetPercentage = targetPercentage;
     }
+
+    public Long getId() { return id; }
+    public Long getInvestorId() { return investorId; }
+    public String getAssetClass() { return assetClass; }
+    public Double getCurrentPercentage() { return currentPercentage; }
+    public Double getTargetPercentage() { return targetPercentage; }
+    public boolean isResolved() { return resolved; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public void setResolved(boolean resolved) { this.resolved = resolved; }
 }
