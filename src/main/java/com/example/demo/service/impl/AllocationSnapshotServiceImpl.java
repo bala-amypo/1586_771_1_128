@@ -25,8 +25,6 @@ public class AllocationSnapshotServiceImpl implements AllocationSnapshotService 
     public AllocationSnapshotRecord computeSnapshot(Long investorId) {
         AllocationSnapshotRecord snapshot = new AllocationSnapshotRecord();
         snapshot.setInvestorId(investorId);
-
-        // ❌ REMOVED setAlertCount() (field does not exist)
         return snapshotRepository.save(snapshot);
     }
 
@@ -42,4 +40,7 @@ public class AllocationSnapshotServiceImpl implements AllocationSnapshotService 
     }
 
     @Override
-    public List<AllocationSnapshotRecord> g
+    public List<AllocationSnapshotRecord> getAllSnapshots() {
+        return snapshotRepository.findAll();
+    }
+}
