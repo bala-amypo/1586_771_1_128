@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.RebalancingAlertRecord;
-import com.example.demo.repositories.RebalancingAlertRepository;
+import com.example.demo.repositories.RebalancingAlertRecordRepository;
 
 import com.example.demo.service.RebalancingAlertService;
 import org.springframework.stereotype.Service;
