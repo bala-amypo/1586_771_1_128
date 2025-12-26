@@ -20,7 +20,7 @@ public class RebalancingAlertServiceImpl implements RebalancingAlertService {
     public RebalancingAlertRecord createAlert(RebalancingAlertRecord alert) {
         if (alert.getCurrentPercentage() <= alert.getTargetPercentage()) {
             throw new IllegalArgumentException(
-                    "Invalid Alert Logic: currentPercentage must be greater than targetPercentage"
+                    "currentPercentage must be greater than targetPercentage"
             );
         }
         return repository.save(alert);
@@ -39,5 +39,10 @@ public class RebalancingAlertServiceImpl implements RebalancingAlertService {
                     return repository.save(alert);
                 })
                 .orElseThrow(() -> new IllegalArgumentException("Alert not found"));
+    }
+
+    @Override
+    public List<RebalancingAlertRecord> getAllAlerts() {
+        return repository.findAll();
     }
 }
