@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.AllocationSnapshotRecord;
-import com.example.demo.entity.RebalancingAlertRecord;
 import com.example.demo.repositories.AllocationSnapshotRecordRepository;
 import com.example.demo.repositories.RebalancingAlertRecordRepository;
 import com.example.demo.service.AllocationSnapshotService;
@@ -27,12 +26,7 @@ public class AllocationSnapshotServiceImpl implements AllocationSnapshotService 
         AllocationSnapshotRecord snapshot = new AllocationSnapshotRecord();
         snapshot.setInvestorId(investorId);
 
-        // example logic (adjust as per your rules)
-        List<RebalancingAlertRecord> alerts =
-                alertRecordRepository.findByInvestorId(investorId);
-
-        snapshot.setAlertCount(alerts.size());
-
+        // ❌ REMOVED setAlertCount() (field does not exist)
         return snapshotRepository.save(snapshot);
     }
 
@@ -48,7 +42,4 @@ public class AllocationSnapshotServiceImpl implements AllocationSnapshotService 
     }
 
     @Override
-    public List<AllocationSnapshotRecord> getAllSnapshots() {
-        return snapshotRepository.findAll();
-    }
-}
+    public List<AllocationSnapshotRecord> g
