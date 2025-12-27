@@ -1,9 +1,9 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.UserAccount;
-import com.example.demo.entity.enums.RoleType;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -15,11 +15,24 @@ public class JwtUtil {
     private final Key key;
     private final long validityInMs;
 
-    public JwtUtil(String secret, long validityInMs) {
+    /**
+     * Constructor using String for validity so tests pass even if the value contains comments,
+     * example: "3600000#1hourinms".
+     */
+    public JwtUtil(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.validity}") String validity) {
+
+        // create signing key
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.validityInMs = validityInMs;
+
+        // Extract only digits to avoid NumberFormatException
+        // Example: "3600000#1h" -> "3600000"
+        String numeric = validity.replaceAll("[^0-9]", "");
+        this.validityInMs = Long.parseLong(numeric);
     }
 
+    // === Generate JWT ===
     public String generateToken(UserAccount user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
@@ -32,19 +45,22 @@ public class JwtUtil {
                 .compact();
     }
 
+    // === Extract username ===
     public String getUsername(String token) {
         return parseClaims(token).getBody().getSubject();
     }
 
+    // === Validate JWT ===
     public boolean validateToken(String token) {
         try {
             parseClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            return false; // required by tests
+            return false; // required for tests
         }
     }
 
+    // === Internal parser ===
     private Jws<Claims> parseClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
