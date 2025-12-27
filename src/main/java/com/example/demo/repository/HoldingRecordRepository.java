@@ -8,12 +8,12 @@ import java.util.List;
 
 public interface HoldingRecordRepository extends JpaRepository<HoldingRecord, Long> {
 
-    // holdings for investor
+    // get holdings for a given investor
     List<HoldingRecord> findByInvestorId(Long investorId);
 
-    // HQL-like test — test checks signature
+    // compare using field `currentValue`
     List<HoldingRecord> findByCurrentValueGreaterThan(Double currentValue);
 
-    // used in testGetHoldingByAssetClass (signature exact)
-    List<HoldingRecord> findByInvestorAndAssetClass(Long investorId, AssetClassType assetClass);
+    // FIXED: use investorId, not investor
+    List<HoldingRecord> findByInvestorIdAndAssetClass(Long investorId, AssetClassType assetClass);
 }
