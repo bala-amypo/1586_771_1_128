@@ -1,0 +1,48 @@
+package com.example.demo.controller;
+
+import com.example.demo.entity.InvestorProfile;
+import com.example.demo.service.InvestorProfileService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/investors")
+@Tag(name = "Investor Profiles")
+public class InvestorProfileController {
+
+    private final InvestorProfileService service;
+
+    public InvestorProfileController(InvestorProfileService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public InvestorProfile create(@RequestBody InvestorProfile investor) {
+        return service.createInvestor(investor);
+    }
+
+    @GetMapping("/{id}")
+    public InvestorProfile getById(@PathVariable Long id) {
+        return service.getInvestorById(id);
+    }
+
+    @GetMapping
+    public List<InvestorProfile> getAll() {
+        return service.getAllInvestors();
+    }
+
+    @PutMapping("/{id}/status")
+    public InvestorProfile updateStatus(
+            @PathVariable Long id,
+            @RequestParam boolean active) {
+        return service.updateInvestorStatus(id, active);
+    }
+
+    @GetMapping("/lookup/{investorId}")
+    public Optional<InvestorProfile> lookup(@PathVariable String investorId) {
+        return service.findByInvestorId(investorId);
+    }
+}
