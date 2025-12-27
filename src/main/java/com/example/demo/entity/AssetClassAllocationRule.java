@@ -28,11 +28,23 @@ public class AssetClassAllocationRule {
         this.active = active;
     }
 
-    // getters/setters
+    // getters
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
     public Long getInvestorId() { return investorId; }
     public AssetClassType getAssetClass() { return assetClass; }
     public Double getTargetPercentage() { return targetPercentage; }
     public Boolean getActive() { return active; }
+
+    // ✅ REQUIRED SETTERS (THIS WAS MISSING)
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTargetPercentage(Double targetPercentage) {
+        this.targetPercentage = targetPercentage;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
