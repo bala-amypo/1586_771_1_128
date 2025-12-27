@@ -1,9 +1,9 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.UserAccount;
-import com.example.demo.entity.enums.RoleType;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -15,7 +15,10 @@ public class JwtUtil {
     private final Key key;
     private final long validityInMs;
 
-    public JwtUtil(String secret, long validityInMs) {
+    public JwtUtil(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.validity}") long validityInMs
+    ) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.validityInMs = validityInMs;
     }
@@ -41,7 +44,7 @@ public class JwtUtil {
             parseClaims(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            return false; // required by tests
+            return false;
         }
     }
 
