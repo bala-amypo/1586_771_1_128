@@ -8,6 +8,7 @@ import com.example.demo.service.InvestorProfileService;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class InvestorProfileServiceImpl implements InvestorProfileService {
 
     private final InvestorProfileRepository repository;

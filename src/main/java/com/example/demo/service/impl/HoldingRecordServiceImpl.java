@@ -6,7 +6,7 @@ import com.example.demo.service.HoldingRecordService;
 
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class HoldingRecordServiceImpl implements HoldingRecordService {
 
     private final HoldingRecordRepository repository;

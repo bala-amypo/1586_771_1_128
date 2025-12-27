@@ -6,7 +6,7 @@ import com.example.demo.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@Service
 public class AllocationSnapshotServiceImpl {
 
     private final AllocationSnapshotRecordRepository snapshotRepo;
