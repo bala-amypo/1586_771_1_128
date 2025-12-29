@@ -1,54 +1,20 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.*;
 import com.example.demo.security.JwtTokenProvider;
-import com.example.demo.service.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
-@RequestMapping("/auth")
-@Tag(name = "Authentication", description = "Endpoints for user registration and login")
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private GuestService guestService;
+    private final JwtTokenProvider tokenProvider;
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;   // ✅ ADD THIS
-
-    @PostMapping("/register")
-    public ResponseEntity<Guest> register(@RequestBody Guest guest) {
-        return ResponseEntity.ok(guestService.createGuest(guest));
+    public AuthController(JwtTokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(
-            @RequestBody Map<String, String> loginRequest) {
-
-        Guest guest = guestService.loginGuest(
-                loginRequest.get("email"),
-                loginRequest.get("password")
-        );
-
-        // ✅ REAL JWT TOKEN
-        String token = jwtTokenProvider.generateToken(
-                guest.getId(),
-                guest.getEmail(),
-                guest.getRole()
-        );
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Login successful");
-        response.put("guestId", guest.getId());
-        response.put("email", guest.getEmail());
-        response.put("token", token);   // ✅ FIXED
-
-        return ResponseEntity.ok(response);
+    public String login(@RequestParam String username) {
+        return tokenProvider.generateToken(username);
     }
 }
