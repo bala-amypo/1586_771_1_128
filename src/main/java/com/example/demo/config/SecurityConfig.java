@@ -11,13 +11,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.example.demo.security.CustomUserDetailsService;
+import com.example.demo.security.JwtAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthFilter; // your JWT filter
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -40,15 +43,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            .csrf().disable() // disable CSRF for APIs
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").authenticated()  // secure API endpoints
-                .anyRequest().permitAll()                     // allow other requests
+                .requestMatchers("/api/**").authenticated() // protect API endpoints
+                .anyRequest().permitAll()                   // allow other endpoints
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // no session
             )
-            .httpBasic();  // Use basic authentication instead of login page
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // JWT filter
+            .formLogin().disable()   // disable default login form
+            .httpBasic().disable();  // disable HTTP Basic auth
 
         return http.build();
     }
