@@ -1,30 +1,40 @@
-package com.example.demo.config;
+package com.example.demo.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
 
-@Component   // ✅ THIS IS THE KEY FIX
+@Component
 public class JwtTokenProvider {
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final String SECRET = "secretkey123456";
+    private final long EXPIRATION = 86400000; // 1 day
 
-    private final long validityInMs = 3600000; // 1 hour
-
-    public String generateToken(String username, String role) {
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + validityInMs);
+    public String generateToken(String email) {
 
         return Jwts.builder()
-                .setSubject(username)
-                .claim("role", role)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(key)
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .signWith(SignatureAlgorithm.HS256, SECRET)
                 .compact();
+    }
+
+    public String getEmailFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }
