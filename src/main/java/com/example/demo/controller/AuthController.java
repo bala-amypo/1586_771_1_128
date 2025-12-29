@@ -14,17 +14,14 @@ public class AuthController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // ✅ REGISTER
     @PostMapping("/register")
     public String register(
             @RequestParam String email,
             @RequestParam String password
     ) {
-        // no DB, no encoding needed
         return jwtTokenProvider.generateToken(email);
     }
 
-    // ✅ LOGIN
     @PostMapping("/login")
     public String login(
             @RequestParam String email,
