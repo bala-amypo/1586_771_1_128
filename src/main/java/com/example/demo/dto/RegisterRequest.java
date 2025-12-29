@@ -1,14 +1,9 @@
 package com.example.demo.dto;
 
-import com.example.demo.entity.enums.RoleType;
-
 public class RegisterRequest {
-
     private String email;
     private String password;
-    private RoleType role;
-
-    public RegisterRequest() {}
+    private String fullName;
 
     public String getEmail() {
         return email;
@@ -26,11 +21,11 @@ public class RegisterRequest {
         this.password = password;
     }
 
-    public RoleType getRole() {
-        return role;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setRole(RoleType role) {
-        this.role = role;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }
