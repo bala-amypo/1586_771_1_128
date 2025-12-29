@@ -1,43 +1,43 @@
 package com.example.demo.controller;
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.UserAccount;
-import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserAccountService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.security.JwtTokenProvider;
+import com.example.demo.security.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserAccountService userService;
-    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final CustomUserDetailsService userDetailsService;
 
-    public AuthController(UserAccountService userService, JwtUtil jwtUtil) {
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest req) {
-        UserAccount user = userService.register(req);
-        String token = jwtUtil.generateToken(user);
-
-        return ResponseEntity.ok(
-                new AuthResponse(token, user.getId(), user.getEmail(), user.getRole().name())
-        );
+    @Autowired
+    public AuthController(
+            AuthenticationManager authenticationManager,
+            JwtTokenProvider jwtTokenProvider,
+            CustomUserDetailsService userDetailsService
+    ) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest req) {
-        UserAccount user = userService.authenticate(req.getEmail(), req.getPassword());
-        String token = jwtUtil.generateToken(user);
+    public String login(@RequestParam String email,
+                        @RequestParam String password) {
 
-        return ResponseEntity.ok(
-                new AuthResponse(token, user.getId(), user.getEmail(), user.getRole().name())
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password)
         );
+
+        // ✅ FIX: extract username/email
+        String username = authentication.getName();
+
+        return jwtTokenProvider.generateToken(username);
     }
 }
