@@ -1,24 +1,29 @@
-// package com.example.demo.security;
 
-// import io.jsonwebtoken.Jwts;
-// import io.jsonwebtoken.SignatureAlgorithm;
-// import org.springframework.stereotype.Component;
 
-// import java.util.Date;
+package com.example.demo.security;
 
-// @Component
-// public class JwtTokenProvider {
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
-//     private final String jwtSecret = "secret-key";
-//     private final long jwtExpirationMs = 86400000;
+import java.io.IOException;
 
-//     public String generateToken(String username) {
-//         return Jwts.builder()
-//                 .setSubject(username)
-//                 .setIssuedAt(new Date())
-//                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-//                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
-//                 .compact();
-//     }
-// }
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+
+        // TODO: Add JWT validation logic
+        filterChain.doFilter(request, response);
+    }
+}
